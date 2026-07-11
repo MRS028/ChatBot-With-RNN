@@ -10,6 +10,8 @@ import shutil
 
 nltk.download('punkt')
 
+DATASET_ID = "grafstor/simple-dialogs-for-chatbot"
+
 
 def find_dataset_file(path):
     """Return the best available dataset file from a Kaggle download directory."""
@@ -23,7 +25,7 @@ def find_dataset_file(path):
         if os.path.basename(fp).lower() == "dialogs.txt":
             return fp
 
-    # 2) Current Kaggle dataset ships CSV files.
+    # 2) CSV fallback for datasets that ship structured files.
     preferred_csv = [
         "sft_combined.csv",
         "sft_500_starter.csv",
@@ -110,7 +112,7 @@ def extract_pairs(file_path):
 def download_dataset():
     """Download the dataset from Kaggle using kagglehub."""
     print("Downloading dataset from Kaggle...")
-    path = kagglehub.dataset_download("shubhankartiwari/chatbot-dataset")
+    path = kagglehub.dataset_download(DATASET_ID)
     file_path = find_dataset_file(path)
     print(f"Dataset resolved: {file_path}")
     return file_path
